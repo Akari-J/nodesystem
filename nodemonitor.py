@@ -1,10 +1,9 @@
 import pynvml
-import pymysql
 import json
 import datetime
-import paramiko
 import socket
 import psutil
+import os
 from psutil._common import sdiskpart
 
 class nodeMonitor:
@@ -17,13 +16,13 @@ class nodeMonitor:
     def getSystemInfo(self):
         thisNode = {}
         hostName=socket.gethostname()
-        #thisNode["nodeIPv4"] = socket.gethostbyname(hostName)
-        thisNode["nodeIPv6"] =  socket.getaddrinfo(socket.gethostname(),None)[0][4][0]
+        thisNode["nodeIPv4"]= os.popen("ifconfig | grep -A 5 'enp'| grep 'inet addr:' | cut -d: -f2 ").read().split()[0]
+        thisNode["nodeIPv6"] = os.popen("ifconfig | grep -A 5 'enp'| grep 'inet6 addr:' | grep 'Global' ").read().split()[2].split('/')[0]
         thisNode["nodeName"] = hostName
         #thisNode["nodeCPUs"] = psutil.name()
         #thisNode["nodeCPUFrequence"] = psutil.cpu_freq().current
-        thisNode["nodeCPUNum"] = psutil.cpu_count()
-
+        thisNode["nodeCPUNum"] = str(psutil.cpu_count())
+        thisNode["CPUUsage"] = psutil.cpu_percent(1,0)
         pynvml.nvmlInit()
         deviceCount = pynvml.nvmlDeviceGetCount()
         handle = pynvml.nvmlDeviceGetHandleByIndex(0)
@@ -31,22 +30,25 @@ class nodeMonitor:
         thisNode["nodeGPUs"] = str(pynvml.nvmlDeviceGetName(handle))
         thisNode["nodeGPUNum"] = deviceCount
         thisNode["nodeGPUMem"] = info.total # total  free  used
+        thisNode["GPUUsage"] = 100*info.used/info.total
         pynvml.nvmlShutdown()
 
         thisNode["nodeRAM"] = psutil.virtual_memory().total
-        #thisNode["nodeRAMFrequence"] = r[10]
+        thisNode["RAMUsage"]= psutil.virtual_memory().percent
+
         diskNum = len(psutil.disk_partitions())
         diskSpace = []
         diskIdle = []
+        diskUsage = []
         for i in psutil.disk_partitions():
             diskSpace.append(str(psutil.disk_usage(i.device).total))
             diskIdle.append(str(psutil.disk_usage(i.device).free))
+            diskUsage.append(str(psutil.disk_usage(i.device).percent))
 
         thisNode["nodeDiskNum"] = diskNum
         thisNode["nodeDiskSpace"] = ",".join(diskSpace)
         thisNode["nodeDiskIdle"] = ",".join(diskIdle)
-
-        #thisNode["nodeCUDAVersion"] = r[14]
+        thisNode["DiskUsage"] = ",".join(diskUsage)
         
         thisNode["createTime"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")#datetime类型不能转化为json
         
@@ -57,7 +59,7 @@ class nodeMonitor:
         #for item in thisNode.keys():
         #    print(type(thisNode[item]))
 
-        with open(".ds300/nodeInfo.json","w",encoding='utf-8') as f:
+        with open("nodeInfo.json","w",encoding='utf-8') as f:
             json.dump(thisNode,f)
         return True
 
