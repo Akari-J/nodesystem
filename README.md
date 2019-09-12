@@ -1,5 +1,4 @@
 # nodesystem
-
 主节点需要的库：pynvml pymysql json datetime paramiko socket traceback time psutil re
 子节点需要的库：pynvml json datetime socket psutil os
 
@@ -20,22 +19,12 @@ class nodeMonitor: #在子节点运行
     #获取节点信息  写入json文件
 
 class nodesManagementClass:
-    def __init__(self, configFilePath):
-        with open(configFilePath, "r", encoding='utf-8') as f:                        
-            __configObj__ = json.load(f)
-            self.__db__         = __configObj__["database"]
-            self.__dbName__     = self.__db__['database_name']
-            self.__dbUserName__ = self.__db__['user_name']
-            self.__dbPasswd__   = self.__db__['passwd']
-            self.__dbHost__     = self.__db__['database_host']
-            self.__port__       = 22
-            self.__ssh__        = paramiko.SSHClient() 
-            self.__remoteDir__  = __configObj__['remote_dir']#代码发送到子节点的路径
-            self.__nodeInfoDir__= __configObj__['nodeinfo_dir']#子节点的系统信息的路径
-            self.__downDir__    = __configObj__['down_path']#节点的信息下载到主节点的路径
-            self.__upDir__      = __configObj__['up_path']#上传的空文件
-            self.__codePath__   = __configObj__['code_path']#发送到子节点的代码在主节点上的位置
-            self.__ssh__.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    def __init__(self, configFilePath): 
+            #self.__remoteDir__  #代码发送到子节点的路径
+            #self.__nodeInfoDir__#子节点的系统信息的路径
+            #self.__downDir__  #节点的信息下载到主节点的路径
+            #self.__upDir__    #上传的空文件
+            #self.__codePath__  #发送到子节点的代码在主节点上的位置
             
     def addNode(self, nodeInfo):    
     #添加节点  返回操作是否成功
