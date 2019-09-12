@@ -25,6 +25,7 @@
             #self.__downDir__  #节点的信息下载到主节点的路径
             #self.__upDir__    #上传的空文件
             #self.__codePath__  #发送到子节点的代码在主节点上的位置
+            #self.__folderPath__ #在子节点建立的文件夹名字
             
         def addNode(self, nodeInfo):    
         #添加节点  返回操作是否成功
