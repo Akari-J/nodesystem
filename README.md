@@ -28,6 +28,7 @@
             
         def addNode(self, nodeInfo):    
         #添加节点  返回操作是否成功
+        #默认   isDeleted= 0   enabledMachine = 1   userGroup = "admin"
 
         def deleteNodeByIP(self, nodeIP):
         #根据IP删除节点  返回操作是否成功
