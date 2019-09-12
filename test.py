@@ -69,10 +69,17 @@ class nodesManagementClass:
 
     def deleteNodeByIP(self, nodeIP):
         try:
+            nodeIPvn = 4
+            for i in nodeIP:
+                if i == ':':
+                    nodeIPvn = 6
+                    break
             db=pymysql.connect (self.__dbHost__ ,self.__dbUserName__ ,self.__dbPasswd__ ,self.__dbName__  ,charset ='utf8' )
             cursor=db.cursor()
-            
-            cursor.execute('update systemnodes set isdeleted = 1 where nodeIP = %s' ,(nodeIP))
+            if nodeIPvn == 4:
+                cursor.execute('update systemnodes set isdeleted = 1 where nodeIPv4 = %s' ,(nodeIP))
+            else:
+                cursor.execute('update systemnodes set isdeleted = 1 where nodeIPv6 = %s' ,(nodeIP))
             db.commit()
             db.close()
         except Exception as e:
@@ -254,7 +261,7 @@ class nodesManagementClass:
             sftp = paramiko.SFTPClient.from_transport(self.__ssh__.get_transport())
             sftp = self.__ssh__.open_sftp()
 
-            sftp.mkdir('.ds300')
+            #sftp.mkdir('.ds300')
             sftp.put(self.__upDir__,self.__nodeInfoDir__)#空json
             sftp.put(self.__codePath__,self.__remoteDir__)
 
@@ -290,6 +297,8 @@ class nodesManagementClass:
             if a != None:
                 module = a.group()[38:-2]
                 print(module)
+
+
             time.sleep(2)
             sftp.get(self.__nodeInfoDir__,self.__downDir__)
 
@@ -309,6 +318,6 @@ if __name__ == '__main__':
 
     diction = {"nodeIP":"192.168.4.247","sshUserName":"ubuntu","sshUserPasswd":"1"}
     data = json.dumps(diction)
-    #a.addNode(data)
+    a.addNode(data)
     a.updateNodeInfo("2001:da8:8000:6880:6bff:f783:c376:de87")
     
