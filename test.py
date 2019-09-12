@@ -131,24 +131,20 @@ class nodesManagementClass:
                 if nodeIPvn == 4:
                     cursor.execute('update systemnodes set nodeipv6= %s, nodeName = %s,nodeCPUNum= %s,\
                         nodeGPUs= %s, nodeGPUNum= %s,nodeGPUMem= %s,nodeRAM= %s,nodeDiskNum= %s,\
-                        nodeDiskSpace= %s,nodeDiskIdle= %s,updateTime= %s,\
-                        isDeleted= %s,enabledMachine= %s,userGroup= %s where nodeIPv4 = %s',(\
+                        nodeDiskSpace= %s,nodeDiskIdle= %s,updateTime= %s where nodeIPv4 = %s',(\
                         aNode["nodeIPv6"],aNode["nodeName"],aNode["nodeCPUNum"],aNode["nodeGPUs"],\
                         aNode["nodeGPUNum"],aNode["nodeGPUMem"],aNode["nodeRAM"],\
                         aNode["nodeDiskNum"],aNode["nodeDiskSpace"],aNode["nodeDiskIdle"],\
-                        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),aNode["isDeleted"],\
-                        aNode["enabledMachine"],aNode["userGroup"] ,nodeIP))
+                        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),nodeIP))
 
                 else:
                     cursor.execute('update systemnodes set nodeipv4= %s, nodeName = %s,nodeCPUNum= %s,\
                         nodeGPUNum= %s,\
-                        nodeGPUMem= %s,nodeRAM= %s,nodeDiskNum= %s,nodeDiskSpace= %s,nodeDiskIdle= %s,updateTime= %s,\
-                        isDeleted= %s,enabledMachine= %s,userGroup= %s where nodeIPv6 = %s' ,(\
+                        nodeGPUMem= %s,nodeRAM= %s,nodeDiskNum= %s,nodeDiskSpace= %s,nodeDiskIdle= %s,updateTime= %s where nodeIPv6 = %s' ,(\
                         aNode["nodeIPv4"],aNode["nodeName"],aNode["nodeCPUNum"],\
                         aNode["nodeGPUNum"],aNode["nodeGPUMem"],aNode["nodeRAM"],\
                         aNode["nodeDiskNum"],aNode["nodeDiskSpace"],aNode["nodeDiskIdle"],\
-                        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),aNode["isDeleted"],
-                        aNode["enabledMachine"],aNode["userGroup"],nodeIP))
+                        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),nodeIP))
                 cursor.close()
 
                 db.commit()
@@ -329,4 +325,5 @@ if __name__ == '__main__':
     data = json.dumps(diction)
     a.addNode(data)
     a.updateNodeInfo("2001:da8:8000:6880:6bff:f783:c376:de87")
+    
     
