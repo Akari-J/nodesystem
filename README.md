@@ -1,16 +1,16 @@
 # nodesystem
-  主节点需要的库：pynvml pymysql json datetime paramiko socket traceback time psutil re
-  子节点需要的库：pynvml json datetime socket psutil os
+    主节点需要的库：pynvml pymysql json datetime paramiko socket traceback time psutil re
+    子节点需要的库：pynvml json datetime socket psutil os
 
-  class createTable:
+    class createTable:
     def __init__(self, configFilePath):               
     #初始化
   
-  def createSystemNodes(self):
-  #建表 
-  #其中 nodeCPUs nodeCPUFrequence nodeRAMFrequence nodeCUDAVersion字段始终为空
+    def createSystemNodes(self):
+    #建表 
+    #其中 nodeCPUs nodeCPUFrequence nodeRAMFrequence nodeCUDAVersion字段始终为空
 
-  class nodeMonitor: #在子节点运行
+    class nodeMonitor: #在子节点运行
     def __init__(self):
         self.__remoteDir__ = ".ds300/nodeInfo.json"
     #得到的节点信息默认写入".ds300/nodeInfo.json"
@@ -18,7 +18,7 @@
     def getSystemInfo(self):
     #获取节点信息  写入json文件
 
-  class nodesManagementClass:
+    class nodesManagementClass:
       def __init__(self, configFilePath): 
             #self.__remoteDir__  #代码发送到子节点的路径
             #self.__nodeInfoDir__#子节点的系统信息的路径
