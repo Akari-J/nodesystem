@@ -11,5 +11,6 @@
     "nodeinfo_dir"      : ".ds300/nodeInfo.json",
     "down_path"         : "D:/vs/node.json",
     "up_path"           : "D:/vs/nodeInfo.json",
-    "code_path"         : "D:/vs/nodemonitor.py"
+    "code_path"         : "D:/vs/nodemonitor.py",
+    "folder"            : ".ds300"
 }

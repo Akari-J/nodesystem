@@ -26,6 +26,7 @@ class nodesManagementClass:
             self.__downDir__    = __configObj__['down_path']#节点的信息下载到主节点的路径
             self.__upDir__      = __configObj__['up_path']#上传的空文件
             self.__codePath__   = __configObj__['code_path']#发送到子节点的代码在主节点上的位置
+            self.__folderPath__ = __configObj__['folder']#在子节点建立的文件夹名字
             self.__ssh__.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             
     def addNode(self, nodeInfo):    
@@ -261,10 +262,18 @@ class nodesManagementClass:
             sftp = paramiko.SFTPClient.from_transport(self.__ssh__.get_transport())
             sftp = self.__ssh__.open_sftp()
 
-            #sftp.mkdir('.ds300')
+            stdin, stdout, stderr =self.__ssh__.exec_command('ls -a')
+            folders = stdout.read().decode("utf-8").split('\n')
+            isExist = False
+            
+            for i in folders:
+                if i == self.__folderPath__:
+                    isExist = True
+                    break
+            if isExist == False:
+                sftp.mkdir(self.__folderPath__)
             sftp.put(self.__upDir__,self.__nodeInfoDir__)#空json
             sftp.put(self.__codePath__,self.__remoteDir__)
-
             sftp.close()
             self.__ssh__.close()
         except Exception as e:
@@ -288,7 +297,7 @@ class nodesManagementClass:
             sftp = paramiko.SFTPClient.from_transport(self.__ssh__.get_transport())
             sftp = self.__ssh__.open_sftp()
             
-            stdin, stdout, stderr =self.__ssh__.exec_command('cd .ds300\n nohup python3 Monitor.py > log.out 2>&1 &')
+            stdin, stdout, stderr =self.__ssh__.exec_command('cd '+self.__folderPath__+'\n nohup python3 Monitor.py > log.out 2>&1 &')
             error = stderr.read().decode("utf-8")
     
             print(stdout.read())
