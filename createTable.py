@@ -8,8 +8,8 @@ import pymysql
 import json
 
 class createTable:
-        def __init__(self):               
-                with open('D:/vs/config.json', "r", encoding='utf-8') as f:                        
+        def __init__(self, configFilePath):               
+                with open(configFilePath, "r", encoding='utf-8') as f:                        
                         __configObj__ = json.load(f)
                         self.__db__        = __configObj__['database']
                         self.__dbName__    = self.__db__['database_name']
@@ -25,13 +25,13 @@ class createTable:
                         nodeIPv4          VARCHAR(255),\
                         nodeIPv6          VARCHAR(255),\
                         nodeName          VARCHAR(30),\
-                        nodeCPUs           VARCHAR(30),\
+                        nodeCPUs          VARCHAR(30),\
                         nodeCPUFrequence  CHAR(5),\
                         nodeCPUNum        CHAR(2),\
-                        nodeGPUs           VARCHAR(30) ,\
+                        nodeGPUs          VARCHAR(30) ,\
                         nodeGPUNum        CHAR(1),\
-                        nodeGPUMem        INT,\
-                        nodeRAM           INT,\
+                        nodeGPUMem        BIGINT,\
+                        nodeRAM           BIGINT,\
                         nodeRAMFrequence  CHAR(5),\
                         nodeDiskNum       CHAR(2),\
                         nodeDiskSpace     VARCHAR(255),\
@@ -48,5 +48,5 @@ class createTable:
                 db.close()
 
 
-a = createTable()
+a = createTable('D:/vs/config.json')
 a.createSystemNodes()
