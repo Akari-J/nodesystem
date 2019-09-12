@@ -1,6 +1,3 @@
-#作者：林珈漫
-#创建日期：2019.7.11
-#修改日期：2019.7.13
 
 #create database node character set utf8;
 
