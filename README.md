@@ -1,4 +1,5 @@
 # nodesystem
+    #nodeInfo.json为空文件
     主节点需要的库：pynvml pymysql json datetime paramiko socket traceback time psutil re
     子节点需要的库：pynvml json datetime socket psutil os
 
